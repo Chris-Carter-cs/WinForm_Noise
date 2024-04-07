@@ -14,7 +14,8 @@ namespace WinForm_Noise
 
         private void btn_generate_Click(object sender, EventArgs e)
         {
-            MapDisplayBox.Image = Generator.PerlinNoise();
+            Random r = new Random();
+            MapDisplayBox.Image = Generator.MapFromPerlinNoise(r.Next(), new int[] { 500, 400 });
 
         }
     }

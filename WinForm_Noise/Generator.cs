@@ -103,10 +103,10 @@ namespace WinForm_Noise
                     float dx = fx % 1.0f;
                     float dy = fy % 1.0f;
 
-                    float i0 = lerp(dots[0], dots[1], dx);
-                    float i1 = lerp(dots[2], dots[3], dx);
+                    float i0 = smoothstep(dots[0], dots[1], dx);
+                    float i1 = smoothstep(dots[2], dots[3], dx);
 
-                    float i2 = lerp(i0, i1, dy);
+                    float i2 = smoothstep(i0, i1, dy);
 
                     i2 = i2 * 0.5f + 0.5f;
 
@@ -124,10 +124,102 @@ namespace WinForm_Noise
             return bmp;
         }
 
-        public static float lerp(float a0, float a1, float w)
+        public static float smoothstep(float a0, float a1, float w)
         {
             return (a1 - a0) * (3.0f - w * 2.0f) * w * w + a0;
         }
 
+
+
+        public static Bitmap MapFromPerlinNoise(int seed, int[] imageSize, int octaves = 1, float lacunarity = 0.5f, float persistance = 0.5f)
+        {
+            Debug.Assert(imageSize.Length == 2);
+
+            Bitmap bmp = new Bitmap(imageSize[0], imageSize[1]);
+            Vector2[,] gradiants = GenerateGradiants(imageSize[0] / 25, imageSize[1] / 25, seed);
+
+            for(int x = 0; x < imageSize[0]; x++)
+            {
+                for(int y = 0; y < imageSize[1]; y++)
+                {
+                    float fx = x;
+                    float fy = y;
+                    
+                    fx /= imageSize[0];
+                    fy /= imageSize[1];
+
+                    float weight = PerlinSample(fx, fy, gradiants);
+                    weight = weight * 0.5f + 0.5f;
+
+                    byte bWeight = (byte)Math.Clamp(weight * 255, 0, 255);
+
+                    
+                }
+            }
+
+            return bmp;
+        }
+
+        private static Vector2[,] GenerateGradiants(int width, int height, int seed)
+        {
+            Vector2[,] gradiants = new Vector2[width, height];
+            Random rand = new Random(seed);
+
+            for (int gridX = 0; gridX < width; gridX++)
+            {
+                for (int gridY = 0; gridY < height; gridY++)
+                {
+                    float angle = (float)rand.NextDouble() * 360;
+                    float x = (float)Math.Sin(angle);
+                    float y = (float)Math.Cos(angle);
+
+                    gradiants[gridX, gridY] = new Vector2(x, y);
+                }
+            }
+
+            return gradiants;
+        }
+
+        private static float PerlinSample(float x, float y, Vector2[,] gradiants)
+        {
+            x = x * gradiants.GetLength(0);
+            y = y * gradiants.GetLength(1);
+
+
+            //Use the floor to find the grid corner that is to the top left.
+            int gx = (int)Math.Floor(x);
+            int gy = (int)Math.Floor(y);
+
+            //Calculate the dot offset for each corner.
+            float[] dots = new float[4];
+            Vector2 offset;
+
+            //Calculate dot products.
+            int i = 0;
+            for(int dy = 0; dy < 2; dy++)
+            {
+                for(int dx = 0; dx < 2; dx++)
+                {
+                    Vector2 corner = gradiants[(gx + dx) % gradiants.GetLength(0), (gy + dy) % gradiants.GetLength(1)];
+                    offset = new Vector2(gx + dx - x, gy + dy - y);
+
+                    dots[i++] = Vector2.Dot(corner, offset);
+
+                }
+            }
+
+            //Calculate weights for interpolation
+            float wx = x % 1;
+            float wy = y % 1;
+
+            //Interpolate along corners with same y value
+            float i0 = smoothstep(dots[0], dots[1], wx);
+            float i1 = smoothstep(dots[2], dots[3], wx);
+
+            //Interpolate results
+            float i2 = smoothstep(i0, i1, wy);
+
+            return i2;
+        }
     }
 }
