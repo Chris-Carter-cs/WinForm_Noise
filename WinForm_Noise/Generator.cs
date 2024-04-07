@@ -100,10 +100,10 @@ namespace WinForm_Noise
                     //Make sure that the gx and gy coordinates are valid. If not, use a dummy value for the dot (for now).
                     if(gx >= 0 && gx < gridWidth && gy >= 0 && gy < gridHeight)
                     {
-                         dot = Vector2.Dot(gradiants[gx, gy], offset);
+                         dot = Vector2.Dot(gradiants[gx, gy], offset) * 0.5f + 0.5f;
                     } else
                     {
-                        dot = 0.5f;
+                        dot = 0.0f;
                     }
 
                     //Interpolate dot product between 0 and 255.
