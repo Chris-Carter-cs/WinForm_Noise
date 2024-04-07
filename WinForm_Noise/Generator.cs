@@ -131,33 +131,70 @@ namespace WinForm_Noise
 
 
 
-        public static Bitmap MapFromPerlinNoise(int seed, int[] imageSize, int octaves = 1, float lacunarity = 0.5f, float persistance = 0.5f)
+        public static Bitmap MapFromPerlinNoise(int seed, int[] imageSize, int octaves = 1, float lacunarity = 1.5f, float persistance = 0.5f)
         {
             Debug.Assert(imageSize.Length == 2);
-
-            Bitmap bmp = new Bitmap(imageSize[0], imageSize[1]);
             Vector2[,] gradiants = GenerateGradiants(imageSize[0] / 25, imageSize[1] / 25, seed);
+
+            //Used to store weights from the sampling. Needed because of the implementation of multiple sampling across octaves.
+            float[,] weights = new float[imageSize[0], imageSize[1]];
+
+            //Track min and max weights as they're inserted.
+            float minWeight = float.PositiveInfinity;
+            float maxWeight = float.NegativeInfinity;
 
             for(int x = 0; x < imageSize[0]; x++)
             {
                 for(int y = 0; y < imageSize[1]; y++)
                 {
-                    float fx = x;
-                    float fy = y;
-                    
-                    fx /= imageSize[0];
-                    fy /= imageSize[1];
+                    float weight = 0;
+                    float amp = 1;
 
-                    float weight = PerlinSample(fx, fy, gradiants);
-                    weight = weight * 0.5f + 0.5f;
+                    for (int i = 0; i < octaves; i++)
+                    {
+                        float fx = x;
+                        float fy = y;
 
-                    byte bWeight = (byte)Math.Clamp(weight * 255, 0, 255);
+                        fx /= imageSize[0];
+                        fy /= imageSize[1];
 
-                    
+                        fx *= 1 + (i * lacunarity);
+                        fy *= 1 + (i * lacunarity);
+
+                        weight += amp * PerlinSample(fx, fy, gradiants);
+
+                        amp *= persistance;
+                    }
+
+                    //Update min and max weights.
+                    if (weight > maxWeight) maxWeight = weight;
+                    if (weight < minWeight) minWeight = weight;
+
+                    weights[x, y] = weight;
+                }
+            }
+
+            Bitmap bmp = new Bitmap(imageSize[0], imageSize[1]);
+
+            //Loop through again and rescale all of the values to the min and max before adding them to the bmp.
+            for (int x = 0; x < imageSize[0]; x++)
+            {
+                for (int y = 0; y < imageSize[1]; y++)
+                {
+                    float weight = inverseLerp(minWeight, maxWeight, weights[x, y]);
+                    byte bWeight = (byte)(Math.Clamp(weight * 255, 0, 255));
+
+                    Color col = Color.FromArgb(bWeight, bWeight, bWeight);
+                    bmp.SetPixel(x, y, col);
                 }
             }
 
             return bmp;
+        }
+
+        private static float inverseLerp(float a, float b, float value)
+        {
+            return (value - a) / (b - a);
         }
 
         private static Vector2[,] GenerateGradiants(int width, int height, int seed)

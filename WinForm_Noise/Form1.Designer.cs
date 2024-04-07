@@ -31,6 +31,12 @@
             groupBox1 = new GroupBox();
             MapDisplayBox = new PictureBox();
             btn_generate = new Button();
+            label1 = new Label();
+            tb_octaves = new TextBox();
+            tb_persistance = new TextBox();
+            label2 = new Label();
+            tb_lacunarity = new TextBox();
+            label3 = new Label();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)MapDisplayBox).BeginInit();
             SuspendLayout();
@@ -59,7 +65,7 @@
             // 
             // btn_generate
             // 
-            btn_generate.Location = new Point(157, 389);
+            btn_generate.Location = new Point(122, 120);
             btn_generate.Name = "btn_generate";
             btn_generate.Size = new Size(104, 23);
             btn_generate.TabIndex = 1;
@@ -67,11 +73,68 @@
             btn_generate.UseVisualStyleBackColor = true;
             btn_generate.Click += btn_generate_Click;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(66, 27);
+            label1.Name = "label1";
+            label1.Size = new Size(52, 15);
+            label1.TabIndex = 2;
+            label1.Text = "Octaves:";
+            // 
+            // tb_octaves
+            // 
+            tb_octaves.Location = new Point(126, 24);
+            tb_octaves.Name = "tb_octaves";
+            tb_octaves.Size = new Size(100, 23);
+            tb_octaves.TabIndex = 3;
+            tb_octaves.TextChanged += tb_octaves_TextChanged;
+            // 
+            // tb_persistance
+            // 
+            tb_persistance.Location = new Point(126, 53);
+            tb_persistance.Name = "tb_persistance";
+            tb_persistance.Size = new Size(100, 23);
+            tb_persistance.TabIndex = 5;
+            tb_persistance.TextChanged += tb_persistance_TextChanged;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(51, 56);
+            label2.Name = "label2";
+            label2.Size = new Size(69, 15);
+            label2.TabIndex = 4;
+            label2.Text = "Persistance:";
+            // 
+            // tb_lacunarity
+            // 
+            tb_lacunarity.Location = new Point(126, 82);
+            tb_lacunarity.Name = "tb_lacunarity";
+            tb_lacunarity.Size = new Size(100, 23);
+            tb_lacunarity.TabIndex = 7;
+            tb_lacunarity.TextChanged += tb_lacunarity_TextChanged;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(55, 85);
+            label3.Name = "label3";
+            label3.Size = new Size(65, 15);
+            label3.TabIndex = 6;
+            label3.Text = "Lacunarity:";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(tb_lacunarity);
+            Controls.Add(label3);
+            Controls.Add(tb_persistance);
+            Controls.Add(label2);
+            Controls.Add(tb_octaves);
+            Controls.Add(label1);
             Controls.Add(btn_generate);
             Controls.Add(groupBox1);
             Name = "Form1";
@@ -88,5 +151,11 @@
         private GroupBox groupBox1;
         private PictureBox MapDisplayBox;
         private Button btn_generate;
+        private Label label1;
+        private TextBox tb_octaves;
+        private TextBox tb_persistance;
+        private Label label2;
+        private TextBox tb_lacunarity;
+        private Label label3;
     }
 }
