@@ -50,8 +50,8 @@ namespace WinForm_Noise
             Random random = new Random();
             int imageHeight = 400;
             int imageWidth = 500;
-            int gridHeight = 8;
-            int gridWidth = 10;
+            int gridHeight = 16;
+            int gridWidth = 20;
 
             //Generate gradiant vectors.
             Vector2[,] gradiants = new Vector2[gridWidth, gridHeight];
@@ -78,36 +78,40 @@ namespace WinForm_Noise
                     float fy = y;
                     fy = fy / imageHeight;
 
-                    if (false && y == 25 && x % 100 == 25)
-                    {
-                        Debug.Write(string.Format("Pixel ({0}, {1}) goes to ({2}, {3})", x, y, fx, fy));
-                    }
-
                     //Use that to translate to be in terms of the grid
                     fx *= gridWidth;
                     fy *= gridHeight;
 
-                    //Round to the nearest integer to index grid array
-                    int gx = (int)Math.Round(fx);
-                    int gy = (int)Math.Round(fy);
+                    //Use the floor to find the grid corner that is to the top left.
+                    int gx = (int)Math.Floor(fx);
+                    int gy = (int)Math.Floor(fy);
 
-                    //Find offset vector in terms of the grid space.
+                    //Calculate the dot offset for each corner.
+                    float[] dots = new float[4];
                     Vector2 offset = new Vector2(gx - fx, gy - fy);
+                    dots[0] = Vector2.Dot(offset, gradiants[gx, gy]);
 
-                    //Take the dot product of the offset vector and the gradiant vector.
-                    float dot;
-                    
-                    //Make sure that the gx and gy coordinates are valid. If not, use a dummy value for the dot (for now).
-                    if(gx >= 0 && gx < gridWidth && gy >= 0 && gy < gridHeight)
-                    {
-                         dot = Vector2.Dot(gradiants[gx, gy], offset) * 0.5f + 0.5f;
-                    } else
-                    {
-                        dot = 0.0f;
-                    }
+                    offset = new Vector2((gx + 1) - fx, gy - fy);
+                    dots[1] = Vector2.Dot(offset, gradiants[(gx + 1) % gridWidth, gy]);
+
+                    offset = new Vector2(gx - fx, (gy + 1) - fy);
+                    dots[2] = Vector2.Dot(offset, gradiants[gx, (gy + 1) % gridHeight]);
+
+                    offset = new Vector2((gx + 1) - fx, (gy + 1) - fy);
+                    dots[3] = Vector2.Dot(offset, gradiants[(gx + 1) % gridWidth, (gy + 1) % gridHeight]);
+
+                    float dx = fx % 1.0f;
+                    float dy = fy % 1.0f;
+
+                    float i0 = lerp(dots[0], dots[1], dx);
+                    float i1 = lerp(dots[2], dots[3], dx);
+
+                    float i2 = lerp(i0, i1, dy);
+
+                    i2 = i2 * 0.5f + 0.5f;
 
                     //Interpolate dot product between 0 and 255.
-                    byte iDot = (byte)((dot * 255) % 255);
+                    byte iDot = (byte)((i2 * 255) % 255);
 
                     //Set the pixel on the map.
                     Color c = Color.FromArgb(iDot, iDot, iDot);
@@ -118,6 +122,11 @@ namespace WinForm_Noise
 
             
             return bmp;
+        }
+
+        public static float lerp(float a0, float a1, float w)
+        {
+            return (a1 - a0) * (3.0f - w * 2.0f) * w * w + a0;
         }
 
     }
