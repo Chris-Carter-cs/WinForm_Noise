@@ -24,17 +24,28 @@ namespace WinForm_Noise
             MapDisplayBox.Image = Generator.MapFromPerlinNoise(r.Next(), new int[] { 500, 400 }, octaves, lacu, pers);
 
         }
+        
+        private void btn_process1_Click(object sender, EventArgs e)
+        {
+            Bitmap buffer = (Bitmap)MapDisplayBox.Image;
+
+            MapDisplayBox.Image = Generator.ProcessHeightmap(buffer);
+        }
 
         private string prevOct = "";
+        private int prevOctIndex = 0;
         private void tb_octaves_TextChanged(object sender, EventArgs e)
         {
             int dummy;
             if (!int.TryParse(tb_octaves.Text, out dummy))
             {
                 tb_octaves.Text = prevOct;
-            } else
+                tb_octaves.SelectionStart = prevOctIndex;
+            }
+            else
             {
                 prevOct = tb_octaves.Text;
+                prevOctIndex = tb_octaves.SelectionStart;
             }
         }
         private string prevPer = "";
@@ -44,7 +55,8 @@ namespace WinForm_Noise
             if (!float.TryParse(tb_persistance.Text, out dummy))
             {
                 tb_persistance.Text = prevPer;
-            } else
+            }
+            else
             {
                 prevPer = tb_persistance.Text;
             }
@@ -56,10 +68,13 @@ namespace WinForm_Noise
             if (!float.TryParse(tb_lacunarity.Text, out dummy))
             {
                 tb_lacunarity.Text = prevLacu;
-            } else
+            }
+            else
             {
                 prevLacu = tb_lacunarity.Text;
             }
         }
+
+
     }
 }

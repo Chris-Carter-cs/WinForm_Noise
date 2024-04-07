@@ -37,6 +37,7 @@
             label2 = new Label();
             tb_lacunarity = new TextBox();
             label3 = new Label();
+            btn_process1 = new Button();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)MapDisplayBox).BeginInit();
             SuspendLayout();
@@ -124,11 +125,22 @@
             label3.TabIndex = 6;
             label3.Text = "Lacunarity:";
             // 
+            // btn_process1
+            // 
+            btn_process1.Location = new Point(122, 149);
+            btn_process1.Name = "btn_process1";
+            btn_process1.Size = new Size(104, 23);
+            btn_process1.TabIndex = 8;
+            btn_process1.Text = "Process 1";
+            btn_process1.UseVisualStyleBackColor = true;
+            btn_process1.Click += btn_process1_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btn_process1);
             Controls.Add(tb_lacunarity);
             Controls.Add(label3);
             Controls.Add(tb_persistance);
@@ -157,5 +169,6 @@
         private Label label2;
         private TextBox tb_lacunarity;
         private Label label3;
+        private Button btn_process1;
     }
 }

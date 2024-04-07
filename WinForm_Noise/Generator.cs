@@ -146,5 +146,31 @@ namespace WinForm_Noise
             return i2;
         }
 
+
+        public static int seaLevel = 128;
+        public static Bitmap ProcessHeightmap(Bitmap heightmap)
+        {
+            Bitmap bmp = new Bitmap(heightmap.Width, heightmap.Height);
+
+            for(int x = 0; x < heightmap.Width; x++)
+            {
+                for(int y = 0; y < heightmap.Height; y++)
+                {
+                    Color preprocess = heightmap.GetPixel(x, y);
+                    int sample = preprocess.R;
+
+                    if(sample < seaLevel)
+                    {
+                        bmp.SetPixel(x, y, Color.DarkBlue);
+                    } else
+                    {
+                        bmp.SetPixel(x, y, Color.DarkGreen);
+                    }
+                }
+            }
+
+            return bmp;
+        }
+
     }
 }
