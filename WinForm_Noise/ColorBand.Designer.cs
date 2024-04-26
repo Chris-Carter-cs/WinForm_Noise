@@ -34,8 +34,10 @@
             dlg_colorSelector = new ColorDialog();
             btn_color = new Button();
             chk_selected = new CheckBox();
+            colorPrev = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)updown_min).BeginInit();
             ((System.ComponentModel.ISupportInitialize)updown_max).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)colorPrev).BeginInit();
             SuspendLayout();
             // 
             // updown_min
@@ -45,6 +47,7 @@
             updown_min.Name = "updown_min";
             updown_min.Size = new Size(50, 23);
             updown_min.TabIndex = 0;
+            updown_min.ValueChanged += updown_min_ValueChanged;
             // 
             // updown_max
             // 
@@ -53,6 +56,7 @@
             updown_max.Name = "updown_max";
             updown_max.Size = new Size(50, 23);
             updown_max.TabIndex = 1;
+            updown_max.ValueChanged += updown_max_ValueChanged;
             // 
             // label1
             // 
@@ -65,7 +69,7 @@
             // 
             // btn_color
             // 
-            btn_color.Location = new Point(177, 3);
+            btn_color.Location = new Point(200, 3);
             btn_color.Name = "btn_color";
             btn_color.Size = new Size(56, 23);
             btn_color.TabIndex = 3;
@@ -76,25 +80,35 @@
             // chk_selected
             // 
             chk_selected.AutoSize = true;
-            chk_selected.Location = new Point(239, 7);
+            chk_selected.Location = new Point(260, 7);
             chk_selected.Name = "chk_selected";
             chk_selected.Size = new Size(15, 14);
             chk_selected.TabIndex = 4;
             chk_selected.UseVisualStyleBackColor = true;
             // 
+            // colorPrev
+            // 
+            colorPrev.Location = new Point(175, 3);
+            colorPrev.Name = "colorPrev";
+            colorPrev.Size = new Size(20, 20);
+            colorPrev.TabIndex = 5;
+            colorPrev.TabStop = false;
+            // 
             // ColorBand
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(colorPrev);
             Controls.Add(chk_selected);
             Controls.Add(btn_color);
             Controls.Add(label1);
             Controls.Add(updown_max);
             Controls.Add(updown_min);
             Name = "ColorBand";
-            Size = new Size(259, 30);
+            Size = new Size(281, 30);
             ((System.ComponentModel.ISupportInitialize)updown_min).EndInit();
             ((System.ComponentModel.ISupportInitialize)updown_max).EndInit();
+            ((System.ComponentModel.ISupportInitialize)colorPrev).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -106,5 +120,6 @@
         public CheckBox chk_selected;
         public NumericUpDown updown_min;
         public NumericUpDown updown_max;
+        private PictureBox colorPrev;
     }
 }

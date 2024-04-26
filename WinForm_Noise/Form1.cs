@@ -17,9 +17,13 @@ namespace WinForm_Noise
 
         private void btn_generate_Click(object sender, EventArgs e)
         {
-            int octaves = int.Parse(tb_octaves.Text);
-            float pers = float.Parse(tb_persistance.Text);
-            float lacu = float.Parse(tb_lacunarity.Text);
+            int octaves = 4;
+            float pers = 0.25f;
+            float lacu = 1.1f;
+
+            int.TryParse(tb_octaves.Text, out octaves);
+            float.TryParse(tb_persistance.Text, out pers);
+            float.TryParse(tb_lacunarity.Text, out lacu);
 
             Random r = new Random();
             MapDisplayBox.Image = Generator.MapFromPerlinNoise(r.Next(), new int[] { 500, 400 }, octaves, lacu, pers);
@@ -84,18 +88,18 @@ namespace WinForm_Noise
         {
             ColorBand newBand = new ColorBand();
             newBand.Anchor = AnchorStyles.Top;
-            bandTable.Controls.Add(newBand);
-            bandTable.SetRow(newBand, tableRow);
+            newBand.Location = new Point(0, tableRow * 30);
 
-            tableRow++;
-
-            bandTable.RowCount++;
-            foreach (RowStyle rs in bandTable.RowStyles)
+            if (tableRow > 0)
             {
-                rs.Height = 30;
+                newBand.updown_min.Value = bands[tableRow - 1].updown_max.Value;
+                newBand.updown_max.Value = newBand.updown_min.Value + 1;
             }
 
+            BandPanel.Controls.Add(newBand);
+
             bands.Add(newBand);
+            tableRow++;
         }
 
         private Bands ControlToBands()
@@ -118,13 +122,22 @@ namespace WinForm_Noise
 
         private void btn_removeBand_Click(object sender, EventArgs e)
         {
-            foreach(ColorBand band in bands)
-            {
+            for(int i = 0; i < bands.Count; i++) {
+                ColorBand band = bands[i];
                 if(band.chk_selected.Checked)
                 {
-                    bandTable.Controls.Remove(band);
+                    BandPanel.Controls.Remove(band);
                     bands.Remove(band);
+                    i--;
                 }
+            }
+
+            tableRow = 0;
+
+            foreach (ColorBand band in bands)
+            {
+                band.Location = new Point(0, tableRow * 30);
+                tableRow++;
             }
         }
     }

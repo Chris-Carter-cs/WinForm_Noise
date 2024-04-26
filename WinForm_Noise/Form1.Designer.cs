@@ -39,13 +39,11 @@
             label3 = new Label();
             btn_process1 = new Button();
             colorDialog1 = new ColorDialog();
-            bandTable = new TableLayoutPanel();
             btn_addBand = new Button();
             btn_removeBand = new Button();
             BandPanel = new Panel();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)MapDisplayBox).BeginInit();
-            BandPanel.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
@@ -93,6 +91,7 @@
             // 
             tb_octaves.Location = new Point(87, 20);
             tb_octaves.Name = "tb_octaves";
+            tb_octaves.PlaceholderText = "4";
             tb_octaves.Size = new Size(100, 23);
             tb_octaves.TabIndex = 3;
             tb_octaves.TextChanged += tb_octaves_TextChanged;
@@ -101,6 +100,7 @@
             // 
             tb_persistance.Location = new Point(87, 49);
             tb_persistance.Name = "tb_persistance";
+            tb_persistance.PlaceholderText = "0.25";
             tb_persistance.Size = new Size(100, 23);
             tb_persistance.TabIndex = 5;
             tb_persistance.TextChanged += tb_persistance_TextChanged;
@@ -118,6 +118,7 @@
             // 
             tb_lacunarity.Location = new Point(87, 78);
             tb_lacunarity.Name = "tb_lacunarity";
+            tb_lacunarity.PlaceholderText = "1.1";
             tb_lacunarity.Size = new Size(100, 23);
             tb_lacunarity.TabIndex = 7;
             tb_lacunarity.TextChanged += tb_lacunarity_TextChanged;
@@ -141,19 +142,6 @@
             btn_process1.UseVisualStyleBackColor = true;
             btn_process1.Click += btn_process1_Click;
             // 
-            // bandTable
-            // 
-            bandTable.ColumnCount = 1;
-            bandTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            bandTable.Location = new Point(0, 0);
-            bandTable.Name = "bandTable";
-            bandTable.RowCount = 3;
-            bandTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
-            bandTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
-            bandTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
-            bandTable.Size = new Size(440, 200);
-            bandTable.TabIndex = 9;
-            // 
             // btn_addBand
             // 
             btn_addBand.Location = new Point(16, 389);
@@ -166,7 +154,6 @@
             // 
             // btn_removeBand
             // 
-            btn_removeBand.Enabled = false;
             btn_removeBand.Location = new Point(97, 389);
             btn_removeBand.Name = "btn_removeBand";
             btn_removeBand.Size = new Size(75, 23);
@@ -177,7 +164,8 @@
             // 
             // BandPanel
             // 
-            BandPanel.Controls.Add(bandTable);
+            BandPanel.AutoScroll = true;
+            BandPanel.BorderStyle = BorderStyle.FixedSingle;
             BandPanel.Location = new Point(12, 165);
             BandPanel.Name = "BandPanel";
             BandPanel.Size = new Size(450, 220);
@@ -205,7 +193,6 @@
             Load += Form1_Load;
             groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)MapDisplayBox).EndInit();
-            BandPanel.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -223,7 +210,6 @@
         private Label label3;
         private Button btn_process1;
         private ColorDialog colorDialog1;
-        private TableLayoutPanel bandTable;
         private Button btn_addBand;
         private Button btn_removeBand;
         private Panel BandPanel;
