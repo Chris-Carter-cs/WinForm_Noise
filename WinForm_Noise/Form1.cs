@@ -5,6 +5,7 @@ namespace WinForm_Noise
 {
     public partial class Form1 : Form
     {
+        private Image noise;
         public Form1()
         {
             InitializeComponent();
@@ -27,12 +28,13 @@ namespace WinForm_Noise
 
             Random r = new Random();
             MapDisplayBox.Image = Generator.MapFromPerlinNoise(r.Next(), new int[] { 500, 400 }, octaves, lacu, pers);
+            noise = (Image)MapDisplayBox.Image.Clone();
 
         }
 
         private void btn_process1_Click(object sender, EventArgs e)
         {
-            Bitmap buffer = (Bitmap)MapDisplayBox.Image;
+            Bitmap buffer = (Bitmap)noise;
 
             Bands bands = this.ControlToBands();
 
@@ -93,7 +95,7 @@ namespace WinForm_Noise
             if (tableRow > 0)
             {
                 newBand.updown_min.Value = bands[tableRow - 1].updown_max.Value;
-                newBand.updown_max.Value = newBand.updown_min.Value + 1;
+                newBand.updown_max.Value = Math.Min(newBand.updown_min.Value + 1, newBand.updown_max.Maximum);
             }
 
             BandPanel.Controls.Add(newBand);
