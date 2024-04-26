@@ -148,7 +148,7 @@ namespace WinForm_Noise
 
 
         public static int seaLevel = 128;
-        public static Bitmap ProcessHeightmap(Bitmap heightmap)
+        public static Bitmap ProcessHeightmap(Bitmap heightmap, Bands bands)
         {
             Bitmap bmp = new Bitmap(heightmap.Width, heightmap.Height);
 
@@ -157,15 +157,8 @@ namespace WinForm_Noise
                 for(int y = 0; y < heightmap.Height; y++)
                 {
                     Color preprocess = heightmap.GetPixel(x, y);
-                    int sample = preprocess.R;
-
-                    if(sample < seaLevel)
-                    {
-                        bmp.SetPixel(x, y, Color.DarkBlue);
-                    } else
-                    {
-                        bmp.SetPixel(x, y, Color.DarkGreen);
-                    }
+                    byte sample = preprocess.R;
+                    bmp.SetPixel(x, y, bands.FindColor(sample));
                 }
             }
 

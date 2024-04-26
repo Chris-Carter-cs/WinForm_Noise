@@ -38,8 +38,14 @@
             tb_lacunarity = new TextBox();
             label3 = new Label();
             btn_process1 = new Button();
+            colorDialog1 = new ColorDialog();
+            bandTable = new TableLayoutPanel();
+            btn_addBand = new Button();
+            btn_removeBand = new Button();
+            BandPanel = new Panel();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)MapDisplayBox).BeginInit();
+            BandPanel.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
@@ -47,18 +53,18 @@
             groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             groupBox1.AutoSize = true;
             groupBox1.Controls.Add(MapDisplayBox);
-            groupBox1.Location = new Point(288, 12);
+            groupBox1.Location = new Point(472, 12);
             groupBox1.MinimumSize = new Size(500, 400);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(500, 400);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
-            groupBox1.Text = "groupBox1";
+            groupBox1.Text = "Map";
             // 
             // MapDisplayBox
             // 
             MapDisplayBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            MapDisplayBox.Location = new Point(3, 3);
+            MapDisplayBox.Location = new Point(15, 15);
             MapDisplayBox.Name = "MapDisplayBox";
             MapDisplayBox.Size = new Size(475, 375);
             MapDisplayBox.TabIndex = 0;
@@ -66,9 +72,9 @@
             // 
             // btn_generate
             // 
-            btn_generate.Location = new Point(122, 120);
+            btn_generate.Location = new Point(16, 107);
             btn_generate.Name = "btn_generate";
-            btn_generate.Size = new Size(104, 23);
+            btn_generate.Size = new Size(171, 23);
             btn_generate.TabIndex = 1;
             btn_generate.Text = "Generate Map";
             btn_generate.UseVisualStyleBackColor = true;
@@ -77,7 +83,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(66, 27);
+            label1.Location = new Point(29, 28);
             label1.Name = "label1";
             label1.Size = new Size(52, 15);
             label1.TabIndex = 2;
@@ -85,7 +91,7 @@
             // 
             // tb_octaves
             // 
-            tb_octaves.Location = new Point(126, 24);
+            tb_octaves.Location = new Point(87, 20);
             tb_octaves.Name = "tb_octaves";
             tb_octaves.Size = new Size(100, 23);
             tb_octaves.TabIndex = 3;
@@ -93,7 +99,7 @@
             // 
             // tb_persistance
             // 
-            tb_persistance.Location = new Point(126, 53);
+            tb_persistance.Location = new Point(87, 49);
             tb_persistance.Name = "tb_persistance";
             tb_persistance.Size = new Size(100, 23);
             tb_persistance.TabIndex = 5;
@@ -102,7 +108,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(51, 56);
+            label2.Location = new Point(12, 52);
             label2.Name = "label2";
             label2.Size = new Size(69, 15);
             label2.TabIndex = 4;
@@ -110,7 +116,7 @@
             // 
             // tb_lacunarity
             // 
-            tb_lacunarity.Location = new Point(126, 82);
+            tb_lacunarity.Location = new Point(87, 78);
             tb_lacunarity.Name = "tb_lacunarity";
             tb_lacunarity.Size = new Size(100, 23);
             tb_lacunarity.TabIndex = 7;
@@ -119,7 +125,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(55, 85);
+            label3.Location = new Point(16, 81);
             label3.Name = "label3";
             label3.Size = new Size(65, 15);
             label3.TabIndex = 6;
@@ -127,19 +133,64 @@
             // 
             // btn_process1
             // 
-            btn_process1.Location = new Point(122, 149);
+            btn_process1.Location = new Point(16, 136);
             btn_process1.Name = "btn_process1";
-            btn_process1.Size = new Size(104, 23);
+            btn_process1.Size = new Size(171, 23);
             btn_process1.TabIndex = 8;
-            btn_process1.Text = "Process 1";
+            btn_process1.Text = "Apply Bands";
             btn_process1.UseVisualStyleBackColor = true;
             btn_process1.Click += btn_process1_Click;
+            // 
+            // bandTable
+            // 
+            bandTable.ColumnCount = 1;
+            bandTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            bandTable.Location = new Point(0, 0);
+            bandTable.Name = "bandTable";
+            bandTable.RowCount = 3;
+            bandTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            bandTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            bandTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            bandTable.Size = new Size(440, 200);
+            bandTable.TabIndex = 9;
+            // 
+            // btn_addBand
+            // 
+            btn_addBand.Location = new Point(16, 389);
+            btn_addBand.Name = "btn_addBand";
+            btn_addBand.Size = new Size(75, 23);
+            btn_addBand.TabIndex = 10;
+            btn_addBand.Text = "Add Band";
+            btn_addBand.UseVisualStyleBackColor = true;
+            btn_addBand.Click += btn_addBand_Click;
+            // 
+            // btn_removeBand
+            // 
+            btn_removeBand.Enabled = false;
+            btn_removeBand.Location = new Point(97, 389);
+            btn_removeBand.Name = "btn_removeBand";
+            btn_removeBand.Size = new Size(75, 23);
+            btn_removeBand.TabIndex = 11;
+            btn_removeBand.Text = "Remove Band";
+            btn_removeBand.UseVisualStyleBackColor = true;
+            btn_removeBand.Click += btn_removeBand_Click;
+            // 
+            // BandPanel
+            // 
+            BandPanel.Controls.Add(bandTable);
+            BandPanel.Location = new Point(12, 165);
+            BandPanel.Name = "BandPanel";
+            BandPanel.Size = new Size(450, 220);
+            BandPanel.TabIndex = 12;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(984, 761);
+            Controls.Add(BandPanel);
+            Controls.Add(btn_removeBand);
+            Controls.Add(btn_addBand);
             Controls.Add(btn_process1);
             Controls.Add(tb_lacunarity);
             Controls.Add(label3);
@@ -154,6 +205,7 @@
             Load += Form1_Load;
             groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)MapDisplayBox).EndInit();
+            BandPanel.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -170,5 +222,10 @@
         private TextBox tb_lacunarity;
         private Label label3;
         private Button btn_process1;
+        private ColorDialog colorDialog1;
+        private TableLayoutPanel bandTable;
+        private Button btn_addBand;
+        private Button btn_removeBand;
+        private Panel BandPanel;
     }
 }
